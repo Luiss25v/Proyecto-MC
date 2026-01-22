@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Proyecto MC · Ayuda-Memoria Interactiva (Funciones)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="color-scheme" content="dark light">
+</head>
+<body>
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">ƒx</div>
+      <div class="brand-text">
+        <div class="brand-title">Ayuda-Memoria Interactiva</div>
+        <div class="brand-sub">Lógica · Conjuntos · Funciones + MATLAB</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="btnTheme" class="btn ghost" aria-label="Cambiar tema">
+        <span class="icon">☾</span><span class="hide-sm">Tema</span>
+      </button>
+      <a class="btn primary" href="#publicar">Publicar</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <nav class="nav">
+        <a class="nav-item active" href="#logica" data-section="logica">Lógica</a>
+        <a class="nav-item" href="#conjuntos" data-section="conjuntos">Conjuntos</a>
+        <a class="nav-item" href="#funciones" data-section="funciones">Funciones</a>
+        <a class="nav-item" href="#publicar" data-section="publicar">GitHub Pages</a>
+      </nav>
+
+      <div class="side-card">
+        <div class="side-title">Tips rápidos</div>
+        <ul class="side-list">
+          <li>Lógica: usa <code>~ & |</code>, <code>-></code>, <code><-></code>, paréntesis.</li>
+          <li>Conjuntos: separa elementos por coma (ej: <code>1,2,a,b</code>).</li>
+          <li>Funciones: escribe tipo MATLAB (ej: <code>sin(x)+x^2</code>).</li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="content">
+
+      <!-- ====== LÓGICA ====== -->
+      <section id="logica" class="section">
+        <div class="section-head">
+          <h2>Lógica proposicional</h2>
+          <p>Escribe una proposición y genera su tabla de verdad. Al lado tienes el MATLAB equivalente.</p>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head">
+              <h3>Entrada</h3>
+              <div class="chip">Variables: A, B, C</div>
+            </div>
+
+            <label class="label">Expresión</label>
+            <input id="logicExpr" class="input" placeholder="Ej: (A & B) -> ~C" />
+
+            <div class="row">
+              <div class="col">
+                <label class="label">Variables</label>
+                <select id="logicVars" class="input">
+                  <option value="2">A, B</option>
+                  <option value="3">A, B, C</option>
+                </select>
+              </div>
+              <div class="col">
+                <label class="label">Ejemplos</label>
+                <select id="logicExample" class="input">
+                  <option value="">— Elegir —</option>
+                  <option value="(A & B) -> A">[(A & B) -> A]</option>
+                  <option value="(A | B) & ~(A & B)">(A OR B) AND NOT(A AND B)</option>
+                  <option value="(A <-> B) | ~C">(A <-> B) OR ~C</option>
+                  <option value="xor(A,B) -> C">xor(A,B) -> C</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button id="btnLogicRun" class="btn primary">Generar tabla</button>
+              <button id="btnLogicClear" class="btn ghost">Limpiar</button>
+            </div>
+
+            <div id="logicMsg" class="msg" role="status" aria-live="polite"></div>
+
+            <div class="hint">
+              <strong>Operadores:</strong>
+              <div class="kbd-wrap">
+                <span class="kbd">~</span> NOT
+                <span class="kbd">&</span> AND
+                <span class="kbd">|</span> OR
+                <span class="kbd">-></span> Implica
+                <span class="kbd"><-></span> Bicondicional
+                <span class="kbd">xor(A,B)</span> XOR
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3>Tabla de verdad</h3>
+              <div class="btn-row tight">
+                <button class="btn ghost" id="btnLogicCopy">Copiar MATLAB</button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table id="truthTable" class="table">
+                <thead></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="codebox">
+              <div class="codehead">
+                <span>Código MATLAB</span>
+                <span class="muted">Generado automáticamente</span>
+              </div>
+              <pre><code id="logicMatlab"></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== CONJUNTOS ====== -->
+      <section id="conjuntos" class="section">
+        <div class="section-head">
+          <h2>Conjuntos</h2>
+          <p>Prueba operaciones básicas entre conjuntos y visualiza un diagrama tipo Venn.</p>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head">
+              <h3>Entrada de conjuntos</h3>
+              <div class="chip">A y B</div>
+            </div>
+
+            <label class="label">Conjunto A</label>
+            <input id="setA" class="input" placeholder="Ej: 1,2,3,a,b" />
+
+            <label class="label">Conjunto B</label>
+            <input id="setB" class="input" placeholder="Ej: 2,3,4,b,c" />
+
+            <label class="label">Operación</label>
+            <div class="pill-row" role="tablist" aria-label="Operaciones de conjuntos">
+              <button class="pill active" data-op="union">A ∪ B</button>
+              <button class="pill" data-op="intersect">A ∩ B</button>
+              <button class="pill" data-op="setdiffAB">A \ B</button>
+              <button class="pill" data-op="setdiffBA">B \ A</button>
+              <button class="pill" data-op="setxor">Dif. simétrica</button>
+            </div>
+
+            <div class="btn-row">
+              <button id="btnSetRun" class="btn primary">Calcular</button>
+              <button id="btnSetExample" class="btn ghost">Cargar ejemplo</button>
+            </div>
+
+            <div id="setMsg" class="msg" role="status" aria-live="polite"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3>Resultado</h3>
+              <div class="btn-row tight">
+                <button class="btn ghost" id="btnSetCopy">Copiar MATLAB</button>
+              </div>
+            </div>
+
+            <div class="result">
+              <div class="result-row">
+                <span class="muted">A:</span> <span id="outA" class="mono"></span>
+              </div>
+              <div class="result-row">
+                <span class="muted">B:</span> <span id="outB" class="mono"></span>
+              </div>
+              <div class="result-row">
+                <span class="muted">Operación:</span> <span id="outOp" class="mono"></span>
+              </div>
+              <div class="result-row">
+                <span class="muted">Resultado:</span> <span id="outRes" class="mono"></span>
+              </div>
+            </div>
+
+            <div class="venn-wrap">
+              <svg id="venn" viewBox="0 0 520 260" class="venn" aria-label="Diagrama Venn">
+                <defs>
+                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity="0.25"/>
+                  </filter>
+                </defs>
+                <rect x="0" y="0" width="520" height="260" rx="18" class="venn-bg"/>
+                <circle cx="220" cy="130" r="90" class="venn-a" filter="url(#softShadow)"/>
+                <circle cx="300" cy="130" r="90" class="venn-b" filter="url(#softShadow)"/>
+                <text x="180" y="45" class="venn-label">A</text>
+                <text x="330" y="45" class="venn-label">B</text>
+
+                <text id="vennLeft" x="170" y="135" class="venn-text"></text>
+                <text id="vennMid" x="260" y="135" class="venn-text"></text>
+                <text id="vennRight" x="350" y="135" class="venn-text"></text>
+              </svg>
+            </div>
+
+            <div class="codebox">
+              <div class="codehead">
+                <span>Código MATLAB</span>
+                <span class="muted">Operación equivalente</span>
+              </div>
+              <pre><code id="setMatlab"></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== FUNCIONES ====== -->
+      <section id="funciones" class="section">
+        <div class="section-head">
+          <h2>Funciones y gráficas</h2>
+          <p>Define una función y visualiza su gráfica. La web genera el script MATLAB para producir lo mismo.</p>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head">
+              <h3>Definir función</h3>
+              <div class="chip">f(x)</div>
+            </div>
+
+            <label class="label">Expresión (estilo MATLAB)</label>
+            <input id="fxExpr" class="input" placeholder="Ej: exp(-x).*cos(3*x) + x.^2" />
+
+            <div class="row">
+              <div class="col">
+                <label class="label">x mínimo</label>
+                <input id="xmin" class="input" type="number" step="0.1" value="-5"/>
+              </div>
+              <div class="col">
+                <label class="label">x máximo</label>
+                <input id="xmax" class="input" type="number" step="0.1" value="5"/>
+              </div>
+              <div class="col">
+                <label class="label">Puntos</label>
+                <input id="npoints" class="input" type="number" min="50" max="2000" value="400"/>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button id="btnFxRun" class="btn primary">Graficar</button>
+              <button id="btnFxExample" class="btn ghost">Cargar ejemplo</button>
+              <button id="btnFxExport" class="btn ghost">Exportar JSON</button>
+            </div>
+
+            <div id="fxMsg" class="msg" role="status" aria-live="polite"></div>
+
+            <div class="hint">
+              <strong>Soporta:</strong> <code>sin</code>, <code>cos</code>, <code>tan</code>, <code>exp</code>, <code>log</code>, <code>sqrt</code>, potencias <code>^</code>, y multiplicación punto <code>.*</code> / <code>.^</code>.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3>Gráfica</h3>
+              <div class="btn-row tight">
+                <button class="btn ghost" id="btnFxCopy">Copiar MATLAB</button>
+              </div>
+            </div>
+
+            <div class="plot-wrap">
+              <canvas id="plot" width="900" height="520" aria-label="Gráfica de la función"></canvas>
+            </div>
+
+            <div class="codebox">
+              <div class="codehead">
+                <span>Código MATLAB</span>
+                <span class="muted">Para graficar f(x)</span>
+              </div>
+              <pre><code id="fxMatlab"></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== PUBLICAR ====== -->
+      <section id="publicar" class="section">
+        <div class="section-head">
+          <h2>Publicar en GitHub Pages</h2>
+          <p>Pasos rápidos para que quede como link real en internet.</p>
+        </div>
+
+        <div class="card">
+          <ol class="steps">
+            <li>Crea un repositorio en GitHub (ej: <span class="mono">proyecto-mc-funciones</span>).</li>
+            <li>Sube estos archivos: <span class="mono">index.html</span>, <span class="mono">styles.css</span>, <span class="mono">app.js</span>, <span class="mono">README.md</span>.</li>
+            <li>En tu repo: <span class="mono">Settings → Pages</span>.</li>
+            <li>En “Build and deployment”: selecciona <span class="mono">Deploy from a branch</span>.</li>
+            <li>Branch: <span class="mono">main</span>, folder: <span class="mono">/root</span>. Guardas.</li>
+            <li>GitHub te dará un link tipo: <span class="mono">https://TUUSUARIO.github.io/proyecto-mc-funciones/</span>.</li>
+          </ol>
+
+          <div class="note">
+            Si el link no carga al instante, recarga después de 1–2 minutos (GitHub a veces demora en publicar).
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span class="muted">Proyecto MC · Ayuda-Memoria (Funciones). Hecho con HTML/CSS/JS + snippets MATLAB.</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
